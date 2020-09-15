@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+    # Use this for first time
+    standalone:
+        build: docker/certbot-standalone
+        ports:
+            - "80:80"
+            - "443:443"
+        env_file:
+            - "certbot.env"
+        volumes:
+            - "letsencrypt_etc:/etc/letsencrypt"
+            - "letsencrypt_varlib:/var/lib/letsencrypt"
+            - "letsencrypt_varwww:/var/www/letsencrypt"
+    # Use this with nginx kept running
+    webroot:
+        build: docker/certbot-webroot
+        env_file:
+            - "certbot.env"
+        volumes:
+            - "letsencrypt_etc:/etc/letsencrypt"
+            - "letsencrypt_varlib:/var/lib/letsencrypt"
+            - "letsencrypt_varwww:/var/www/letsencrypt"
+
+volumes:
+    letsencrypt_etc:
+    letsencrypt_varlib:
+    letsencrypt_varwww:
